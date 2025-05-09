@@ -25,18 +25,18 @@ const cart = {
 
     filtrarPorCategoria(categoria){return this.items.filter((prdct) => prdct.category === categoria)  .map((prdct) => prdct.name);},
 
-    ordenarPorPrecoCrescente(){return this.items.toSorted((a,b) => a.price - b.price) .map((prdct) => prdct.name);},
+    ordenarPorPrecoCrescente(){return this.items.toSorted((a,b) => a.price - b.price) .map((prdct) => prdct.name + " for " + prdct.price );},
 
-    ordenarPorPrecoDecrescente(){return this.items.toSorted((a,b) => b.price - a.price) .map((prdct) => prdct.name);},
+    ordenarPorPrecoDecrescente(){return this.items.toSorted((a,b) => b.price - a.price) .map((prdct) => prdct.name + " for " + prdct.price );},
 
     ordenarPorNome(){{return this.items.toSorted((a, b) => {
       if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        else if (b.name.toLowerCase() > a.name.toLowerCase()) return -1;
-        return 0;
-      })
-      .map((prod) => prod.name);
-  }
-}
+        else if (b.name.toLowerCase() > a.name.toLowerCase()) return -1; 
+        else return 0;}) .map((prod) => prod.name)}}
     };
 
+    console.log(cart.calcularTotal())
+    console.log(cart.filtrarPorCategoria())
+    console.log(cart.ordenarPorPrecoCrescente())
+    console.log(cart.ordenarPorPrecoDecrescente())
     console.log(cart.ordenarPorNome())
