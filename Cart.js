@@ -1,42 +1,73 @@
 // ================ cart products ==========================
 
-function Items(name, storage, ram, price, quantity, category, totalpp) {
+function Product(name, storage, ram, price, quantity, category) {
   this.name = name;
-  this.storage = storage;
+  this.sto = storage;
   this.ram = ram;
   this.price = price;
-  this.quantity = quantity;
+  this.qty = quantity;
   this.category = category;
-  this.totalpp = this.price*this.quantity //totalpp = total per product
 }
 
-const prdct1 = new Items ("Macbook Pro M4", 512, 16, 1599.9, 2, "Macbook")
-const prdct2 = new Items ("Macbook Air M4", 256, 16, 1099.9, 5, "Macbook") 
-const prdct3 = new Items ("Apple Watch Series 10 46mm", 64, null, 429.9, 3, "Watch")
-const prdct4 = new Items ("iPhone 16", 128, 16, 899.9, 10, "iPhone")
-const prdct5 = new Items ("iPhone 16 Pro Max", 1024, 16, 1199.9, 1, "iPhone")
-const prdct6 = new Items ("iMac M4", 512, 24, 1799.9, 1, "iMac")
-const prdct7 = new Items ("iPad Pro 13in", 2048, 8, 2199.9, 1, "iPad")
-
 const cart = {
-    items: [prdct1, prdct2, prdct3, prdct4, prdct5, prdct6, prdct7],
+  products_fc: [new Product("Macbook Pro M4", 512, 16, 1599.9, 2, "Macbook")],
+  products: [
+    {name: "Macbook Pro M4",storage: 512,ram: 16,price: 1599.9,quantity: 2,category: "Macbook",},
+    {name: "Macbook Air M4",storage: 256,ram: 16,price: 1099.9,quantity: 5,category: "Macbook",},
+    {name: "Apple Watch Series 10 46mm",ram: 0,sto: 64,price: 429.9,quantity: 3,category: "Watch",},
+    {name: "iPhone 16",storage: 128,ram: 16,price: 899.9,quantity: 10,category: "iPhone",},
+    {name: "iPhone 16 Pro Max",storage: 1024,ram: 16,price: 1199.9,qty: 1,category: "iPhone",},
+    {name: "iMac M4",storage: 512,ram: 24,price: 1799.9,quantity: 1,category: "iMac",},
+    {name: "iPad Pro 13in",storage: 2048,ram: 8,price: 2199.9,quantity: 1,category: "iPad",},
+  ],
+  
+  calcTotal() {
+    return this.products
+      .reduce((acc, product) => acc + product.price * product.quantity, 0)
+      .toFixed(2);
+  },
+  orderbyCrescent() {
+    return this.products.toSorted((a, b) => a.price - b.price);
+  },
+  orderbyDescending() {
+    return this.products.toSorted((a, b) => b.price - a.price);
+  },
+  orderbyAZ() {
+    return this.products.toSorted((a, b) =>
+      a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+    );
+  },
+  orderbyZA() {
+    return this.products.toSorted((a, b) =>
+      b.name.toUpperCase().localeCompare(a.name.toUpperCase())
+    );
+  },
+  filterPerCategory(category) {
+    return this.products.filter(
+      (product) => product.category.toUpperCase() === categoria.toUpperCase()
+    );
+  },
+  ordenar(prop, order = "c") {
+    return this.products.toSorted((a, b) => {
+      const valA = a[prop];
+      const valB = b[prop];
+      const numbers =
+        typeof valA === "number" &&
+        typeof valB === "number" &&
+        !isNaN(valA) &&
+        !isNaN(valB);
+      if (numbers) {
+        return order === "c" ? valA - valB : valB - valA;
+      } else {
+        const strA = String(valA).toUpperCase();
+        const strB = String(valB).toUpperCase();
+        return order === "c"
+          ? strA.localeCompare(strB)
+          : strB.localeCompare(strA);
+      }
+    });
+  },
+};
 
-    calcularTotal(){return this.items.reduce((i, prdct) => {return i + prdct.price * prdct.quantity;} ,0) },
-
-    filtrarPorCategoria(categoria){return this.items.filter((prdct) => prdct.category === categoria)  .map((prdct) => prdct.name);},
-
-    ordenarPorPrecoCrescente(){return this.items.toSorted((a,b) => a.price - b.price) .map((prdct) => prdct.name + " for " + prdct.price );},
-
-    ordenarPorPrecoDecrescente(){return this.items.toSorted((a,b) => b.price - a.price) .map((prdct) => prdct.name + " for " + prdct.price );},
-
-    ordenarPorNome(){{return this.items.toSorted((a, b) => {
-      if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        else if (b.name.toLowerCase() > a.name.toLowerCase()) return -1; 
-        else return 0;}) .map((prod) => prod.name)}}
-    };
-
-    console.log(cart.calcularTotal())
-    console.log(cart.filtrarPorCategoria())
-    console.log(cart.ordenarPorPrecoCrescente())
-    console.log(cart.ordenarPorPrecoDecrescente())
-    console.log(cart.ordenarPorNome())
+//console.log(cart.calcularTotal());
+console.log(cart.ordenar("ram"));
